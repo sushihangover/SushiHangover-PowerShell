@@ -1,4 +1,5 @@
-<#
+Function Clear-Trash {
+    <#
     .NOTES
         Copyright 2012 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,18 +22,18 @@
         Invoke-Command -filepath .\Clear-Trash.ps1 -ArgumentList $True -ComputerName (Get-ADComputers -Group 'PilotTesting')
         See what would be deleted from trashcans of multiple remote computers 
     .LINK
-    http://sushihangover.blogspot.com
-    http://sushihangover.blogspot.com
-#>
-param (
-    [parameter(Mandatory=$false,Position=0)][switch]$WhatIf
-)
-$objShell = New-Object -ComObject Shell.Application
-$objFolder = $objShell.Namespace(0xA)
-$objFolder.items() | ForEach-Object {
-    if (!$WhatIf) {
-        remove-item $_.path -Recurse -Confirm:$false
-    } else {
-        'What if: Performing  "Remove File" in trashcan ' + $_.Name
+        http://sushihangover.blogspot.com
+    #>
+    param (
+        [parameter(Mandatory=$false,Position=0)][switch]$WhatIf
+    )
+    $objShell = New-Object -ComObject Shell.Application
+    $objFolder = $objShell.Namespace(0xA)
+    $objFolder.items() | ForEach-Object {
+        if (!$WhatIf) {
+            remove-item $_.path -Recurse -Confirm:$false
+        } else {
+            'What if: Performing  "Remove File" in trashcan ' + $_.Name
+        }
     }
 }
