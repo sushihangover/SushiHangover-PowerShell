@@ -34,5 +34,4 @@
         }
     }
 }
-. Set-FileEncoding.ps1
 

@@ -36,4 +36,3 @@
         Write-Output 'ASCII'
     }
 }
-. Get-FileEncoding.ps1
