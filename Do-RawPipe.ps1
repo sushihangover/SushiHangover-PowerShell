@@ -1,7 +1,7 @@
 ﻿Function Do-RawPipe {
     <#
     .NOTES
-        Copyright 2012 Robert Nees
+        Copyright 2012,2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com
      .SYNOPSIS
