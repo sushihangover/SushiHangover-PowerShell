@@ -1,4 +1,4 @@
-#requires -version 2.0
+Set-StrictMode –Version latest
 <#
     .NOTES
         Copyright 2013 Robert Nees
