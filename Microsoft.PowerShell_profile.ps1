@@ -21,9 +21,17 @@ function script:append-path {
 append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell")
 append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\Modules")
 ########################################################
- 
+
+########################################################
+# Dot Sourced Functions
+. Touch-File.ps1
+. Do-Grep.ps1
+. Do-FileEncoding.ps1
+########################################################
+
 ########################################################
 # Aliases
+Set-Alias grep Do-Grep;
 set-alias wide format-wide;
 set-alias which get-command | format-list Path;
 #######################################################
@@ -57,12 +65,6 @@ Function psedit {
         }
     }     
 }
-########################################################
-
-########################################################
-# Dot Sourced Functions
-. touch-file.ps1
-. GrepCmdlet.ps1
 ########################################################
 
 ########################################################
