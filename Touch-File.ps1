@@ -31,7 +31,7 @@ function Touch-File{
     Param(
         [Parameter(Mandatory=$true,ValueFromPipeline=$True)][String]$FileName,
         [Parameter(Mandatory=$false)][Alias('r')][String]$Replace = "",
-        [Parameter(Mandatory=$false)][Alias('t')][DateTime]$Time = $null,
+        [Parameter(Mandatory=$false)][Alias('t')][String]$Time = "",
         [Parameter(Mandatory=$false)][Alias('c')][Switch]$Create,
         [Parameter(Mandatory=$false)][Alias('a')][Switch]$AccessTime,
         [Parameter(Mandatory=$false)][Alias('m')][Switch]$ModificationTime,
@@ -70,6 +70,7 @@ function Touch-File{
             $fsInfo = new-object System.IO.FileInfo($FileName)
             return $fsInfo
         }
+
         if ($Replace -ne "") {
             try {
                 $replaceInfo = Get-ChildItem $Replace
@@ -78,10 +79,10 @@ function Touch-File{
                 return
             }
         } else {
-            if ($Time -eq $null) {
-                $CurrentDateTime = Get-Date            
+            if ($Time -ne "") {
+                $CurrentDateTime = [DateTime]::Parse($Time)
             } else {
-                $CurrentDateTime = $Time
+                $CurrentDateTime = Get-Date            
             }
         }
     }
