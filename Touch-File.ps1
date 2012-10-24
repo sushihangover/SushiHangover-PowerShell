@@ -1,4 +1,3 @@
-Set-StrictMode –Version latest
 <#
     .NOTES
         Copyright 2013 Robert Nees
@@ -26,6 +25,7 @@ Set-StrictMode –Version latest
     .LINK
         http://sushihangover.blogspot.com
 #>
+Set-StrictMode –Version latest
 function Touch-File{
     [cmdletbinding(SupportsShouldProcess=$True)]
     Param(
