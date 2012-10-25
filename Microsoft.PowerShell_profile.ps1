@@ -31,9 +31,10 @@ append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPow
 
 ########################################################
 # Aliases
-Set-Alias grep Do-Grep;
-set-alias wide format-wide;
-set-alias which get-command | format-list Path;
+Set-Alias grep Do-Grep
+set-alias wide format-wide
+set-alias which get-command | format-list Path
+set-alias vi ise
 #######################################################
 
 ########################################################
@@ -61,7 +62,8 @@ Function psedit {
     )
     foreach ($filename in $filenames) {
         dir $filename | where {!$_.PSIsContainer} | %{
-            $psISE.CurrentPowerShellTab.Files.Add($_.FullName) > $null
+            # $psISE.CurrentPowerShellTab.Files.Add($_.FullName) > $null
+            ise $_.FullName
         }
     }     
 }
@@ -208,5 +210,6 @@ $go_locations.Add("desktop", [environment]::GetFolderPath("Desktop"))
 $go_locations.Add("dl", (Join-Path ($env:HOME) "Downloads"))
 $go_locations.Add("docs", [environment]::GetFolderPath("MyDocuments"))
 $go_locations.Add("scripts", (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell") )
+$go_locations.Add("recent", [environment]::GetFolderPath("Recent"))
 ########################################################
 go home
