@@ -1,10 +1,11 @@
-﻿function Get-FileEncoding
+﻿Set-StrictMode –Version latest
+function Get-FileEncoding
 {
     <#
     .NOTES
         Copyright 2012/2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
-        http://sushihangover.blogspot.com        
+        http://sushihangover.blogspot.com      
         ! Grap the original from http://poshcode.org/2059
     .SYNOPSIS
         Gets file encoding.
@@ -17,6 +18,8 @@
     .EXAMPLE
         Get-ChildItem  *.ps1 | select FullName, @{n='Encoding';e={Get-FileEncoding $_.FullName}} | where {$_.Encoding -ne 'ASCII'} | foreach {(get-content $_.FullName) | set-content $_.FullName -Encoding ASCII}
         Same as previous example but fixes encoding using set-content
+    .LINK
+        http://sushihangover.blogspot.com
     #>
     [CmdletBinding()] 
     Param (
