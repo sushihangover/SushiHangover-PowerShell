@@ -20,34 +20,43 @@
     .LINK
         http://sushihangover.blogspot.com
 #>
-Set-StrictMode –Version latest
+#Set-StrictMode –Version latest
+#function Get-WindowsLicenseStatus{
 Param (
-    [Parameter(Mandatory=$false)][Switch]$LocalHost
+    [Parameter(Mandatory=$false)][alias('l')][Switch]$LocalHost
 )
 Try {
-    $vm = get-vm -ErrorAction SilentlyContinue
-    if ($vm -ne $null) {
-        $cim = New-CimSession -ComputerName $vm.name -ErrorAction SilentlyContinue
+    if ($LocalHost.IsPresent) {
+        $cim = New-CimSession
+    } else {
+        $vm = get-vm -ErrorAction SilentlyContinue
+        if ($vm -ne $null) {
+            $cim = New-CimSession -ComputerName $vm.name # -ErrorAction SilentlyContinue
+        } else {
+            Throw "VMMSProblem" # The Virtual Machine Management Service is not running
+        }
     }
-} Catch [Microsoft.HyperV.PowerShell.Commands.GetVMCommand] {
-    # The Virtual Machine Management Service is not running
-    $cim = New-CimSession
 } Catch {
-    $cim = $null
-} Finally {
-    if ($cim -ne $null) {
-        get-ciminstance -class SoftwareLicensingProduct -CimSession $cim |
-          where {$_.name -match 'windows' -AND $_.licensefamily} |
-            format-list -property Name, Description, `
-                     @{Label ="Grace period (days)"; Expression = { $_.graceperiodremaining / 1440}}, `
-                     @{Label = "License Status"; Expression = {
-                        switch (foreach {$_.LicenseStatus}) {
-                            0 {"Unlicensed"} `
-                            1 {"Licensed"} `
-                            2 {"Out-Of-Box Grace Period"} `
-                            3 {"Out-Of-Tolerance Grace Period"} `
-                            4 {"Non-Genuine Grace Period"} `
-                        } 
-                      } }
+    if ($_.Exception.ToString() = "VMMSProblem") {
+        $cim = New-CimSession # just grab the localhost instead
+        Write-Output "Virtual Machine Host problem, showing LocalHost only:"
+    } else {
+        throw "Could not create a new CIM Session"
+        exit
     }
+} 
+if ($cim -ne $null) {
+    get-ciminstance -class SoftwareLicensingProduct -CimSession $cim |
+        where {$_.name -match 'windows' -AND $_.licensefamily} |
+        format-list -property Name, Description, `
+                    @{Label ="Grace period (days)"; Expression = { $_.graceperiodremaining / 1440}}, `
+                    @{Label = "License Status"; Expression = {
+                    switch (foreach {$_.LicenseStatus}) {
+                        0 {"Unlicensed"} `
+                        1 {"Licensed"} `
+                        2 {"Out-Of-Box Grace Period"} `
+                        3 {"Out-Of-Tolerance Grace Period"} `
+                        4 {"Non-Genuine Grace Period"} `
+                    } 
+                    } }
 }
