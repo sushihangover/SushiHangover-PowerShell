@@ -14,18 +14,13 @@
 #>
 function Do-Grep {
     param(
-        [Alias("filter")]   
-        [string]$filterString,
-        [Alias("i")]      
-        [switch]$ignore_case,
-        [Alias("v")]
-        [switch]$invert_match,
-        [Alias("test")]      
-        [switch]$debugOutput,
-        [Alias("H")]
-        [switch]$with_filename,
-        [Alias("ver")]
-        [switch]$version
+        [Parameter(Mandatory=$False, ValueFromPipeline=$True)][string]$Path = '',
+        [Parameter(Mandatory=$False)][Alias("filter")][string]$filterString,
+        [Parameter(Mandatory=$False)][Alias("i")][switch]$ignore_case,
+        [Parameter(Mandatory=$False)][Alias("v")][switch]$invert_match,
+        [Parameter(Mandatory=$False)][Alias("test")][switch]$debugOutput,
+        [Parameter(Mandatory=$False)][Alias("H")][switch]$with_filename,
+        [Parameter(Mandatory=$False)][Alias("ver")][switch]$version
     )
     begin {
         if ($version.IsPresent) {
