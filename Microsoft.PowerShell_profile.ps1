@@ -1,7 +1,7 @@
 Set-StrictMode –Version latest
 <#
     .NOTES
-        Copyright 2013 Robert Nees
+        Copyright 2012,2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com
     .SYNOPSIS
@@ -11,6 +11,7 @@ Set-StrictMode –Version latest
     .LINK
         http://sushihangover.blogspot.com
 #>
+
 ########################################################
 # Custom PS-only path settings
 function script:append-path {
@@ -20,13 +21,19 @@ function script:append-path {
 }
 append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell")
 append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\Modules")
+append-path  "C:\Program Files (x86)\Vim\vim73"
+########################################################
+
+########################################################
+# Load Modules
+Import-Module SushiHangover-Transcripts
 ########################################################
 
 ########################################################
 # Dot Sourced Functions
-. Touch-File.ps1
-. Do-Grep.ps1
-. Do-FileEncoding.ps1
+. func-Touch-File.ps1
+. func-Grep.ps1
+. func-FileEncoding.ps1
 ########################################################
 
 ########################################################
@@ -34,7 +41,9 @@ append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPow
 Set-Alias grep Do-Grep
 set-alias wide format-wide
 set-alias which get-command | format-list Path
-set-alias vi ise
+set-alias vi vim.exe
+set-alias edit vim.exe
+set-alias gvi gvim.exe
 #######################################################
 
 ########################################################
@@ -51,11 +60,10 @@ set-item -path env:GIT_SSH -value "ssh.exe"
 # Helper Functions
 function ff ([string] $glob) { get-childitem -recurse -include $glob }
 function reboot { shutdown /r /t 5 }
-function halt { shutdown /h /t 5 }
+function halt { shutdown /s /t 5 }
 function rmd ([string] $glob) { remove-item -recurse -force $glob }
 function whoami { (get-content env:\userdomain) + "\" + (get-content env:\username); }
 function strip-extension ([string] $filename) { [system.io.path]::getfilenamewithoutextension($filename) } 
-function ed-profile { notepad $profile }
 Function psedit {
     param(
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]$filenames
@@ -213,3 +221,8 @@ $go_locations.Add("scripts", (Join-Path ([environment]::GetFolderPath("MyDocumen
 $go_locations.Add("recent", [environment]::GetFolderPath("Recent"))
 ########################################################
 go home
+
+Initialize-TranscriptLocation
+$go_locations.Add("transcripts", $Global:SH:TranscriptDir)
+$go_locations.Add("logs", $Global:SH:TranscriptDir)
+Initialize-Transcript
