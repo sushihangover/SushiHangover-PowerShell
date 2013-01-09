@@ -14,7 +14,7 @@
     If the Compare-Object output is different than the module is 'broken', please report 
     any problems via SushiHangover on GitHub and/or http://sushihangover.blogspot.com
 .EXAMPLE
-    UnitTest-SushiHangover.ps1
+    UnitTest-RSACrypto.ps1
 .LINK
     http://sushihangover.blogspot.com
 #>
