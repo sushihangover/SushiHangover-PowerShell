@@ -26,14 +26,8 @@ append-path  "C:\Program Files (x86)\Vim\vim73"
 
 ########################################################
 # Load Modules
+Import-Module SushiHangover-Tools
 Import-Module SushiHangover-Transcripts
-########################################################
-
-########################################################
-# Dot Sourced Functions
-. func-Touch-File.ps1
-. func-Grep.ps1
-. func-FileEncoding.ps1
 ########################################################
 
 ########################################################
