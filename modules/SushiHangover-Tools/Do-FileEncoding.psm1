@@ -3,7 +3,7 @@ function Get-FileEncoding
 {
     <#
     .NOTES
-        Copyright 2012/2013 Robert Nees
+        Copyright 2012,2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com      
         ! Grap the original from http://poshcode.org/2059
@@ -52,10 +52,12 @@ function Get-FileEncoding
     End {
     }
 }
+Export-ModuleMember -function Get-FileEncoding
+
 Function Set-FileEncoding {
     <#
     .NOTES
-        Copyright 2012/2013 Robert Nees
+        Copyright 2012,2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com        
     .SYNOPSIS
@@ -88,3 +90,4 @@ Function Set-FileEncoding {
         }
     }
 }
+Export-ModuleMember -function Set-FileEncoding
