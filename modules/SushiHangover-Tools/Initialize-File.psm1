@@ -111,5 +111,4 @@ Export-ModuleMember -function Initialize-File
 # verb list and passes loading without errors, but lets alias to 'touch-file', ok!
 # Not setting alias to 'touch' to avoid 'hidding' your cygwn touch.exe, etc..., do 
 # that in your profile if you are not using another version of Touch on your system.
-Set-Alias Touch-File Initialize-File
-Export-Alias Touch-File -Scope Global
+Set-Alias Touch-File Initialize-File -Scope Global

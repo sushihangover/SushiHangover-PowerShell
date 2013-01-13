@@ -57,30 +57,39 @@ try {
     Write-Warning "An error occurred attempting to add the .NET Framework class to the PowerShell session."
     Write-Warning "The error was: $($Error[0].Exception.Message)"
 }
+
 Function ConvertTo-Base64String {
     Param (
         [Parameter(Mandatory=$true)][Alias('pem')][array]$ByteString
     )
     return [System.Convert]::ToBase64String($ByteString)
 }
+Export-ModuleMember -function ConvertTo-Base64String
+
 Function ConvertFrom-Base64String {
     Param (
         [Parameter(Mandatory=$true)][Alias('pem')][string]$ByteString
     )
     return [System.Convert]::FromBase64String($ByteString)
 }
+Export-ModuleMember -function ConvertFrom-Base64String
+
 Function Convert-ByteToString {
     Param (
         [Parameter(Mandatory=$true)][Alias('byte')][byte[]]$AsciiByteArray
     )
     return [System.Text.Encoding]::ASCII.GetString($AsciiByteArray)
 }
+Export-ModuleMember -function Convert-ByteToString
+
 Function Convert-StringToByte {
     Param (
         [Parameter(Mandatory=$true)][Alias('byte')][string]$AsciiByteString
     )
     return [System.Text.Encoding]::ASCII.GetBytes($AsciiByteString)
 }
+Export-ModuleMember -function Convert-StringToByte
+
 Function Set-RSACryptoServiceProvider {
     Param (
         [Parameter(Mandatory=$true)][Alias('pem')][Alias('p')][string]$PemPrivateKeyFile
@@ -99,12 +108,16 @@ Function Set-RSACryptoServiceProvider {
     new-variable -scope global -name RSACryptoServiceProvider -force 
     $RSACryptoServiceProvider = $RSA
 }
+Export-ModuleMember -function Set-RSACryptoServiceProvider
+
 Function Get-RSACryptoServiceProvider {
     if (!$RSACryptoServiceProvider) {
         . Set-RSACryptoServiceProvider
     }
     return $RSACryptoServiceProvider
 }
+Export-ModuleMember -function Get-RSACryptoServiceProvider
+
 Function Get-RSAClearBytes {
     <#
     .SYNOPSIS
@@ -124,6 +137,8 @@ Function Get-RSAClearBytes {
     $ClearBytes = $RSACryptoServiceProvider.Decrypt($CypherBytes, $OAEPPadding)
     Return $ClearBytes
 }
+Export-ModuleMember -function Get-RSAClearBytes
+
 Function Get-RSAClearText {
     <#
     .SYNOPSIS
@@ -142,6 +157,8 @@ Function Get-RSAClearText {
     $clearBytes = Get-RSAClearBytes $CypherBase64 $OAEPPadding
     Return Convert-ByteToString $clearBytes
 }
+Export-ModuleMember -function Set-RSAEncryptedBytes
+
 Function Get-RSAEncryptedBytes {
     Param (
         [Parameter(Mandatory=$true)][Alias('cypher')][array]$ClearBase64,
@@ -153,3 +170,5 @@ Function Get-RSAEncryptedBytes {
     #$CypherString = [System.Text.Encoding]::ASCII.GetString($CypherBytes)
     Return $CypherBytes
 }
+Export-ModuleMember -function Get-RSAEncryptedBytes
+
