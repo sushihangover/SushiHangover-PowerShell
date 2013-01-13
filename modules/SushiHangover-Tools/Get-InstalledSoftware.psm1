@@ -2,7 +2,7 @@
 Function Get-InstalledSoftware {
     <#
     .NOTES
-        Copyright 2012 Robert Nees
+        Copyright 2012/2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com
     .SYNOPSIS
@@ -18,10 +18,8 @@ Function Get-InstalledSoftware {
             Vendor            : VMware, Inc.
             Version           : 9.2.2.18018
             Caption           : VMware Tools
-
     .EXAMPLE
             [11] » Get-InstalledSoftware
-
 
             IdentifyingNumber : {44D55920-B223-4702-81D9-4C07108A3C27}
             Name              : VMware Tools

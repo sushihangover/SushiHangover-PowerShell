@@ -11,11 +11,11 @@ Function Uninstall-Software {
         A way to script the uninstall of multiple software packages, a great
         way to batch remove 'obsolete' software...
     .EXAMPLE
-        Uninstall-Software "VMWare Tools" -Whatif
+        C:\PS>Uninstall-Software "VMWare Tools" -Whatif
     .EXAMPLE
-        Uninstall-Software "VMWare Tools" -Confirm
+        C:\PS>Uninstall-Software "VMWare Tools" -Confirm
     .EXAMPLE
-        Uninstall-Software "%" -WhatIf | 
+        C:\PS>Uninstall-Software "%" -WhatIf
         Get a list of all installed software...
     .LINK
         http://sushihangover.blogspot.com
@@ -30,13 +30,14 @@ Function Uninstall-Software {
         $Apps = Get-WmiObject -query "SELECT * FROM Win32_Product WHERE Name LIKE '$likeThis'"
     }
     Process {
-        Foreach($App in $apps) {
-            if ($pscmdlet.ShouldProcess($app.name)) {
-                $app.Uninstall()
+        Foreach($App in $Apps) {
+            if ($pscmdlet.ShouldProcess($App.name)) {
+                $App.Uninstall()
             }
             $App
         }
     }
     End {
+        $Apps = $null
     }
 }
