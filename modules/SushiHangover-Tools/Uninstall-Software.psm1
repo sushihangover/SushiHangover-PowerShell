@@ -6,9 +6,17 @@ Function Uninstall-Software {
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com
     .SYNOPSIS
+        Uninstall software 
     .DESCRIPTION
+        A way to script the uninstall of multiple software packages, a great
+        way to batch remove 'obsolete' software...
     .EXAMPLE
+        Uninstall-Software "VMWare Tools" -Whatif
     .EXAMPLE
+        Uninstall-Software "VMWare Tools" -Confirm
+    .EXAMPLE
+        Uninstall-Software "%" -WhatIf | 
+        Get a list of all installed software...
     .LINK
         http://sushihangover.blogspot.com
         https://github.com/sushihangover
@@ -20,13 +28,13 @@ Function Uninstall-Software {
     Begin {
         $likeThis = "%" + $Software + "%"
         $Apps = Get-WmiObject -query "SELECT * FROM Win32_Product WHERE Name LIKE '$likeThis'"
-        $Apps
     }
     Process {
         Foreach($App in $apps) {
             if ($pscmdlet.ShouldProcess($app.name)) {
                 $app.Uninstall()
             }
+            $App
         }
     }
     End {
