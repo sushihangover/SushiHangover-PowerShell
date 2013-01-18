@@ -26,8 +26,10 @@ append-path  "C:\Program Files (x86)\Vim\vim73"
 
 ########################################################
 # Load Modules
+Import-Module PowerShellPack
 Import-Module SushiHangover-Tools
 Import-Module SushiHangover-Transcripts
+Import-Module SushiHangover-RSACrypto
 ########################################################
 
 ########################################################
@@ -208,3 +210,6 @@ Initialize-TranscriptLocation
 $go_locations.Add("transcripts", $Global:SH:TranscriptDir)
 $go_locations.Add("logs", $Global:SH:TranscriptDir)
 Initialize-Transcript
+if (Test-IsElevatedUser) {
+    Write-Host "Running as elevated user" -ForegroundColor Red
+}
