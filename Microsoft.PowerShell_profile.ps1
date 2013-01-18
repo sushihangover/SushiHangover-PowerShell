@@ -73,28 +73,22 @@ Function psedit {
 
 ########################################################
 # Prompt
-function prompt
-{
+function prompt {
 	$nextId = (get-history -count 1).Id + 1;
 	$promptText = "[" + $nextId + "] »";
 
 	$wi = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 		$wp = new-object 'System.Security.Principal.WindowsPrincipal' $wi
 
-		if ( $wp.IsInRole("Administrators") -eq 1 )
-		{
+		if ( $wp.IsInRole("Administrators") -eq 1 ) {
 			$color = "Red"
-				$title = "**ADMIN** - " + (get-location).Path;
-		}
-		else
-		{
+			$title = "**ADMIN** - " + (get-location).Path;
+		} else {
 			$color = "Green"
-				$title = (get-location).Path;
+			$title = (get-location).Path;
 		}
-
 	write-host $promptText -NoNewLine -ForegroundColor $color
 		$host.UI.RawUI.WindowTitle = $title;
-
 	return " "
 }
 ########################################################
@@ -159,16 +153,11 @@ function cd {
 
 ########################################################
 # Custom PS-only path settings
-#   use this for directories that contain PS1 
-#   files since they generally can't be run 
-#   outside of PowerShell
-#
 function script:append-path {
 	$oldPath = get-content Env:\Path;
 	$newPath = $oldPath + ";" + $args;
 	set-content Env:\Path $newPath;
 }
-# Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\Modules"
 append-path (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell")
 ########################################################
 
@@ -182,12 +171,10 @@ filter Format-Bytes {
 	if($ln -eq 0) {
 		return '0    ';
 	}
-
 	while(($ln -gt 1024) -and ($u -lt $units.Length)) {
 		$ln /= 1024;
 		$u++;
 	}
-
 	'{0,7:0.###} {1}' -f $ln, $units[$u];
 }
 ########################################################
@@ -212,6 +199,7 @@ $go_locations.Add("desktop", [environment]::GetFolderPath("Desktop"))
 $go_locations.Add("dl", (Join-Path ($env:HOME) "Downloads"))
 $go_locations.Add("docs", [environment]::GetFolderPath("MyDocuments"))
 $go_locations.Add("scripts", (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell") )
+$go_locations.Add("tools", (Join-Path ([environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\modules\SushiHangover-Tools") )
 $go_locations.Add("recent", [environment]::GetFolderPath("Recent"))
 ########################################################
 go home
