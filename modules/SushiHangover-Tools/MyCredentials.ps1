@@ -38,6 +38,7 @@ Function Import-Credential {
         System.Management.Automation.PSCredential                   ==
     .LINK
         http://sushihangover.blogspot.com
+    .LINK
         https://github.com/sushihangover
     #>
     [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="Low")]

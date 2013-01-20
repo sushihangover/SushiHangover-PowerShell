@@ -1,12 +1,11 @@
 ﻿Set-StrictMode –Version latest
-function Get-FileEncoding
-{
+function Get-FileEncoding {
     <#
     .NOTES
         Copyright 2012,2013 Robert Nees
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com      
-        ! Grap the original from http://poshcode.org/2059
+        ! Grap the original that this is based upon from http://poshcode.org/2059
     .SYNOPSIS
         Gets file encoding.
     .DESCRIPTION
@@ -20,6 +19,8 @@ function Get-FileEncoding
         Same as previous example but fixes encoding using set-content
     .LINK
         http://sushihangover.blogspot.com
+    .LINK 
+        
     #>
     [CmdletBinding()] 
     Param (

@@ -1,7 +1,8 @@
-﻿function Do-Grep {
+﻿Set-StrictMode –Version latest
+function Process-Grep {
     <#
         .NOTES
-            Copyright 2012,2013 Robert Nees
+            Copyright 2012/2013 Robert Nees
             Licensed under the Apache License, Version 2.0 (the "License");
             http://sushihangover.blogspot.com
         .SYNOPSIS
@@ -12,6 +13,8 @@
         .EXAMPLE
         .LINK
             http://sushihangover.blogspot.com
+        .LINK
+            https://git.com/sushihangover
     #>
     [cmdletBinding()]
     param(
@@ -21,7 +24,6 @@
         [Parameter(Mandatory=$False)][Alias("A")][int]$AfterContext = 0,
         [Parameter(Mandatory=$False)][Alias("B")][int]$BeforeContext = 0,
         [Parameter(Mandatory=$False)][Alias("file")][string]$PatternFilename = '',
-
         [Parameter(Mandatory=$False,ValueFromPipeline=$True)][string]$Text = ''
     )
     begin {
