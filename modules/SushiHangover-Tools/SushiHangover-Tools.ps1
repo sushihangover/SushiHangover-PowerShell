@@ -1,17 +1,4 @@
-﻿. $psScriptRoot\Initialize-File.ps1
-. $psScriptRoot\Clear-Trash.ps1
-. $psScriptRoot\Do-FileEncoding.ps1
-. $psScriptRoot\Get-WindowsLicenseStatus.ps1
-. $psScriptRoot\Remove-ComObjectsFromMemory.ps1
-. $psScriptRoot\Uninstall-Software.ps1
-. $psScriptRoot\Get-InstalledSoftware.ps1
-. $psScriptRoot\Dismount-RemovableMedia.ps1
-. $psScriptRoot\Get-RemovableMedia.ps1
-. $psScriptRoot\MyCredentials.ps1
-. $psScriptRoot\Test-IsElevatedUser.ps1
-. $psScriptRoot\Install-WindowsUpdates.ps1
-
-<#
+﻿<#
 .NOTES
     Copyright 2012/2013 Robert Nees
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,3 +12,16 @@
 .LINK
     https://github.com/sushihangover
 #>
+. $psScriptRoot\Initialize-File.ps1
+. $psScriptRoot\Clear-Trash.ps1
+. $psScriptRoot\Do-FileEncoding.ps1
+. $psScriptRoot\Get-WindowsLicenseStatus.ps1
+. $psScriptRoot\Remove-ComObjectsFromMemory.ps1
+. $psScriptRoot\Uninstall-Software.ps1
+. $psScriptRoot\Get-InstalledSoftware.ps1
+. $psScriptRoot\Dismount-RemovableMedia.ps1
+. $psScriptRoot\Get-RemovableMedia.ps1
+. $psScriptRoot\MyCredentials.ps1
+. $psScriptRoot\Test-IsElevatedUser.ps1
+. $psScriptRoot\Install-WindowsUpdates.ps1
+
