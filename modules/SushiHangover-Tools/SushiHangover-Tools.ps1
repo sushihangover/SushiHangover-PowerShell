@@ -24,4 +24,5 @@
 . $psScriptRoot\MyCredentials.ps1
 . $psScriptRoot\Test-IsElevatedUser.ps1
 . $psScriptRoot\Install-WindowsUpdates.ps1
+. $psScriptRoot\Clear-Trash.ps1
 
