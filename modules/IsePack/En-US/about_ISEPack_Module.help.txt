@@ -1,0 +1,217 @@
+TOPIC
+    about_ISEPack_Module
+
+SHORT DESCRIPTION
+    Describes the ISEPack module in the Windows 7 Resource Kit.
+
+LONG DESCRIPTION
+    The ISEPack module adds menu items to the Windows PowerShell Integrated Scripting
+    Environment (ISE). This module has no effect on the Windows PowerShell console or
+    other host programs.
+
+    To use the module, start Windows PowerShell ISE and then use the Import-Module
+    cmdlet to add the module to your session. The command is:
+
+        import-module isepack
+
+    To use the module in every Windows PowerShell ISE session, add the 
+    "Import-Module ISEPack" command to a Windows PowerShell ISE profile. For more
+    information, see "How to Use Profiles in Windows PowerShell ISE"
+    (http://technet.microsoft.com/en-us/library/dd819434.aspx). 
+
+    The ISEPack module also adds to your session the functions that make the commands
+    work. You can use these functions in your session and you can examine the function
+    code to learn how to customize Windows PowerShell ISE. To find these functions, after
+    importing the ISEPaCK module, type:
+
+        get-command -module isepack
+
+
+ MENU ITEMS
+    The ISEPack module adds the following menu items to Windows PowerShell ISE.   
+
+
+    ISEPack Menu:  Click Add-Ons, ISEPack
+
+        Export-FormatView    (CTRL+ALT+F)
+           Creates a view definition for a type that includes only the properties that
+           you specify and exports the definition. Use this command to create a view
+           definition for a Windows PowerShell Format.ps1xml file. For more information,
+           see about_Format_ps1xml.
+          
+       Invoke-Line    (F6)
+           Executes a line of code from a script. To use this command, place the cursor
+           on any line in the Script pane and then use Invoke-Line.
+
+       Show-HelpForCurrentSelection    (CTRL+ALT+H)
+           Displays the full version of help at the command line for text that is
+           selected in any pane. Unlike F1, this command does not open the Windows
+           PowerShell Help compiled help file.
+
+       Show-Member    (ALT+M)
+           Displays the properties and methods of the selected objects in an interactive
+           grid view window. To use this command, select a variable, command, or script
+           block that defines an object, such as "get-process powershell_ise", in any
+           pane, and then use Show-Member.
+
+       Show-SyntaxForCurrentCommand    (ALT+Y)
+           Displays the syntax diagram for the selected commands. To use this command, 
+           select cmdlet, alias, or function names in any pane, and then use 
+           Show-SyntaxForCurrentCommand.
+
+       Show-TypeConstructorForCurrentType    (ALT+C)
+           Gets the type constructor for the selected type. To use this command, 
+           select a type in any pane, such as [int], [string], or [wmi], and then use
+           Show-TypeConstructorForCurrentType.
+
+
+    Edit Menu:  Click Add-Ons, ISEPack, Edit
+
+        AutoSave    (CTRL+F12)         
+           Saves the current script. If the script was not previously saved,
+           it creates a file name based on the name of the first function
+           in the script and saves it in the current directory.
+
+        ClearOutput     (F12)
+           Deletes all content from the output pane. Same as CLS and the 
+           "Clear Output Pane" tool.
+
+        ConvertTo-Function    (ALT+SHIFT+F)
+           Converts the current script into a function and displays it in
+           a new file. The name of the function is the name of the script
+           (without the .ps1 file name extension).
+
+        Copy-Colored    (CTRL+SHIFT+C)
+           Copies text and its color from the Script pane. You can select text and
+           then copy. By default, it copies all text in the Script pane. This function
+           lets you paste the syntax-colored script into other programs, such as Microsoft
+           Word.
+           
+        Copy-ColoredAsHtml    (CTRL+ALT+SHIFT+C)
+           Copies text and its color from the Script pane and converts it to HTML
+           format. You can select text and then copy. By default, it copies all text
+           in the Script pane. This function lets you paste the syntax-colored script
+           into an HTML document. 
+
+        Copy-FilePathToClipboard    (CTRL+P)
+           Copies the full path and file name of the current script. If the script 
+           has not yet been saved, it uses the default name (Untitled*) and the 
+           current directory.
+
+        Move-ToNextGroup    (ALT+SHIFT+RIGHT)
+           Moves your cursor to the next code group in the script. This command helps
+           you to move between logical sections of a script that you are viewing or 
+           editng.
+
+        Move-ToLastGroup    (ALT+SHIFT+LEFT)
+           Moves the cursor to the last code group in the script. This command helps
+           you to move between logical sections of a script that you are viewing or 
+           editng.
+
+        Move-ToLastGroup    (ALT+SHIFT+LEFT)
+           Moves the cursor to the last code group in the script. This command helps
+           you to move between logical sections of a script that you are viewing or 
+           editng.
+
+        Profile             (CTRL+E)
+           Opens the CurrentUser\CurrentHost profile in the Script pane.
+
+        Split-CurrentFile    (CTRL+ALT+MINUS)
+           Splits a script with many functions into a many scripts with one function
+           each. This command copies each function in the script to a separate file. 
+           The original script is not changed.
+
+	Toggle Comments     (CTRL+ALT+C)
+           Adds the comment symbok to uncommented lines and deletes the comment symbol (#)
+           from commented lines . To use this command, select lines of code in the current
+           script and use "Toggle Comments". 
+
+
+
+    Modules Menu:   Click Add-Ons, ISEPack, Modules
+
+        Import-CurrentModule     (CTRL+ALT+M)
+           Imports the module that contains the current script or function. This           
+           command works when the code in the current script includes a function that
+           comes from a module. The function must have been run at least once before
+           using the command.
+
+        New-ScriptModuleFromCurrentLocation
+           Creates a script module (.psm1) that includes the current script and all
+           .ps1 files that are in the same directory as the script. The module is named
+           for the directory. The command works only when the current script is saved in
+           a .ps1 file and a .psm1 file with the directory name does not already exist in
+           the directory.
+
+
+
+
+    Navigation Menu: Click Add-Ons, ISEPack, Navigation
+
+        Close-AllOpenedFiles    (CTRL+SHIFT+F4)
+           Closes all files in the Script pane, except for those that have been changed
+           and not saved.
+
+        Move-ToNextPowerShellTab    (CTRL+ALT+SHIFT+RIGHT)
+           Displays the PowerShell tab to the right of the current tab. Because each 
+           PowerShell tab has its own session, this command works only in PowerShell
+           tabs in which the ISEPack module has been imported. To enable this command in
+           all PowerShell tabs, add the Import-Module command to your Windows PowerShell
+           profile.                
+
+        Move-ToLastPowerShellTab    (CTRL+ALT+SHIFT+LEFT)
+           Displays the right-most PowerShell tab. 
+
+        Push-CurrentFileLocation
+           Saves the current directory location and changes to the directory that 
+           contains the current script. To return to the original location, use the
+           Pop-Location cmdlet ("popd").
+
+        Rename-CurrentPowerShellTab    (CTRL+ALT+N)
+           Prompts you for a new name for the current PowerShell tab. 
+
+        Show-ExplorerForCurrentFile    (CTRL+ALT+E)
+           Opens Windows Explorer to the directory that contains the current script.
+ 
+
+
+
+    Snippets Menu:  Click Add-Ons, ISEPack, Snippets
+
+        Add-ForeachStatemnt    (CTRL + SHIFT + F)
+           Adds a ForEach statement to the current script. Use a Foreach statement to
+           act on each item in a collection.
+
+        Add-IfStatement    (CTRL + SHIFT + I)
+           Adds an If statement to the current script. Use an IF statement to 
+           perform an action only when specified conditions are met.
+
+        Add-InlineHelp    (ALT + H)
+           Adds comment-based help to the current script. For information about the 
+           placement of comment-based help, see about_comment-based_help.
+
+        Add-Parameter    (ALT + P)
+           Adds a Parameter statement to the current script. For information about
+           parameter attributes and arguments, see about_functions_advanced_parameters.
+
+        Add-Pinvoke    (CTRL + Period)
+           Adds a P/Invoke statement to the current script. Use a P/Invoke statement to call
+           functions that are written in C or C++. 
+
+        Add-SwitchStatement    (CTRL + SHIFT + S)
+           Adds a Switch statement to the current script. Use a Switch statement to 
+           perform different actions for each value of a property or variable.
+
+
+NOTES
+    The ISEPack Module uses the Windows PowerShell ISE Object Model and the $psise host
+    variable. 
+
+
+SEE ALSO
+    about_Modules
+    Get-Module
+    Import-Module
+    Remove-Module
+
+    "The Windows PowerShell ISE Scripting Object Model": http://technet.microsoft.com/en-us/library/dd819478.aspx 

@@ -1,0 +1,36 @@
+TOPIC
+    about_System_Module
+
+SHORT DESCRIPTION
+    Describes the System module in the Windows 7 Resource Kit.
+
+LONG DESCRIPTION
+    The System module contains functions that get information about the operating
+    system on the local and remote computers.
+    
+    The System module adds the following functions to your session when you import
+    the module.
+
+        Get-BootStatus                Gets information about how the system was started, e.g. Safe Mode
+        Get-DisplaySetting            Gets the width and height of the primary monitor.
+        Get-LogicalDiskInventory      Gets the logical disks on the local and remote computers.
+        Get-MultiTouchMaximum         Gets the number of fingers that can be used on a multitouch device.
+        Get-OSVersion                 Gets the operating system Version of a local or remote computer.
+        Get-Processor                 Gets processor information for local and remote computers.
+        Get-WindowsEdition            Gets the operating system edition.
+        Test-32Bit                    Returns TRUE when the computer has a 32-bit processor architecture.
+        Test-64Bit                    Returns TRUE when the computer has a 64-bit processor architecture.
+
+
+    For information about these functions, use the Get-Help cmdlet. For example,
+    to get detailed help for the Get-Feed function, type "get-help get-bootstatus -detailed."
+
+    These functions are implemented in the module as scripts, but are available in the session
+    as functions.     
+
+
+SEE ALSO
+    about_Modules
+    Get-Module
+    Import-Module
+    Remove-Module

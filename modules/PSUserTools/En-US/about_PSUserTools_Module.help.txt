@@ -1,0 +1,33 @@
+TOPIC
+    about_PSUserTools_Module
+
+SHORT DESCRIPTION
+    Describes the PSUserTools module in the Windows 7 Resource Kit.
+
+LONG DESCRIPTION
+    The PSUserTools module contains functions that manage and edit users and user
+    groups on the computer.
+
+    The PSUserTools module adds the following functions to your session when you import
+    the module.
+
+
+        Get-CurrentUser                Gets information about the current user.
+        Get-Everyone                   Gets information about all local accounts on the computer.
+        Start-ProcessAsAdministrator   Starts a process with Administrator permssions 
+                                       ("Run as administrator").
+
+        Test-IsAdministrator           Returns TRUE when the current user is an administrator.
+
+    For information about these functions, use the Get-Help cmdlet. For example,
+    to get detailed help for the Get-Feed function, type "get-help get-everyone -detailed."
+
+    These functions are implemented in the module as scripts, but are available in the session
+    as functions.     
+
+
+SEE ALSO
+    about_Modules
+    Get-Module
+    Import-Module
+    Remove-Module

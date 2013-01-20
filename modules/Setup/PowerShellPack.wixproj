@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Cultures>en-us</Cultures>
+    <DefineSolutionProperties>false</DefineSolutionProperties>
+    <OutputName>PowerShellPack</OutputName>
+    <OutputType>package</OutputType>
+    <SetMsiAssemblyNameFileVersion>true</SetMsiAssemblyNameFileVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <SuppressPdbOutput>false</SuppressPdbOutput>
+    <SuppressAllWarnings>false</SuppressAllWarnings>
+
+	<!-- Only change the first three fields of the ProductVersion -->
+	<ProductVersion>1.0.0</ProductVersion>
+	<Manufacturer>Microsoft Corporation</Manufacturer>
+
+	<DefineConstants>
+	  Manufacturer=$(Manufacturer);
+      ProductName=$(ProjectName);
+      ProductVersion=$(ProductVersion);
+    </DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>Debug</DefineConstants>
+    <SuppressValidation>true</SuppressValidation>
+    <LeaveTemporaryFiles>true</LeaveTemporaryFiles>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <LeaveTemporaryFiles>false</LeaveTemporaryFiles>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
+  <Target Name="BeforeCompileAndLink" DependsOnTargets="HarvestFiles" />
+  <Target Name="HarvestFiles"
+    Inputs="@(HeatFile);$(MSBuildAllProjects)"
+    Outputs="$(IntermediateOutputPath)_%(HeatFile.Filename).wxs"
+    Condition=" '@(HeatFile)' != '' ">
+    <HeatFile
+       AutogenerateGuids="true"
+       NoLogo="$(NoLogo)"
+       OutputFile="$(IntermediateOutputPath)_%(HeatProject.Filename).wxs"
+       File="@(HeatFile)"
+       SuppressFragments="false"
+	   ToolPath="$(WixToolPath)" />
+    <CreateItem Include="$(IntermediateOutputPath)_%(HeatFile.Filename).wxs">
+      <Output TaskParameter="Include" ItemName="Compile" />
+    </CreateItem>
+  </Target>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>C:\Program Files\Windows Installer XML v3\bin\WixUIExtension.dll</HintPath>
+    </WixExtension>
+  </ItemGroup>
+  <Target Name="All" DependsOnTargets="Build" />
+  <ItemGroup>
+    <HeatFile Include="**\*.*" Exclude="obj\**;bin\**" />
+    <Compile Include="PowerShellPack.wxs" />
+  </ItemGroup>
+</Project>

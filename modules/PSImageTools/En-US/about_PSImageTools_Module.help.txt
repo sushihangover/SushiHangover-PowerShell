@@ -1,0 +1,65 @@
+TOPIC
+    about_PSImageTools_Module
+
+SHORT DESCRIPTION
+    Describes the PSImageTools module in the Windows 7 Resource Kit.
+
+LONG DESCRIPTION
+    The PSImageTools module contains functions that manage and edit image files, such
+    as photographs, in Windows PowerShell. 
+
+    The PSImageTools module adds the following basic functions to your session
+    when you import the module.
+
+
+        Get-Image              Gets image objects with many useful properties. Provides
+                               methods to load, save, crop, resize, rotate, and flip images.
+                               
+        Get-ImageProperty      Gets extended properties for the image, such as shutter speed
+                               and resolution.
+
+        Copy-ImageIntoOrganizedFolder
+                               Creates a set of folders based on properties that you specify
+                               and copies image files into the folders based on their
+                               property values.
+
+        ConvertTo-Bitmap       Converts images to bitmap format (.bmp).
+        ConvertTo-Jpeg         Converts images to JPEG format (.jpg, .jpeg).
+
+
+    The PSImageTools module also adds filtering functions to your session. You can use these
+    more advanced functions to edit images when the basic functions do not provide a feature
+    that you need.
+
+    The Add-*Filter functions create a Windows Image Acquisition filter that represents a change to one or
+    more images. The filters alone do not change images. To apply a filter to an image, use
+    the Set-ImageFilter function.
+
+        Add-CropFilter         Creates a filter that crops images.
+        Add-OverlayFilter      Creates a filter that overlays one image on another.
+        Add-RotateFlipFilter   Creates a filter that rotate and flips images.
+        Add-ScaleFilter        Creates a filter that resizes images.
+
+        Set-ImageFilter        Edits an image by applying a filter. 
+
+    For information about these functions, use the Get-Help cmdlet. For example,
+    to get detailed help for the Get-Image function, type "get-help get-image -detailed."
+
+    These functions are implemented as scripts, but are available in the 
+    session as functions.
+
+
+SEE ALSO
+    about_Modules
+    Get-Module
+    Import-Module
+    Remove-Module
+
+    "Image Manipulation in PowerShell" (Windows PowerShell Team Blog)
+    http://blogs.msdn.com/powershell/archive/2009/03/31/image-manipulation-in-powershell.aspx
+
+    "ImageProcess object" in MSDN
+    http://msdn.microsoft.com/en-us/library/ms630507(VS.85).aspx
+    
+    "How to Use Filters" in MSDN
+    http://msdn.microsoft.com/en-us/library/ms630819(VS.85).aspx

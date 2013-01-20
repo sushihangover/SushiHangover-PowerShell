@@ -1,0 +1,38 @@
+TOPIC
+    about_PSRSS_Module
+
+SHORT DESCRIPTION
+    Describes the PSRSS module in the Windows 7 Resource Kit.
+
+LONG DESCRIPTION
+    The PSSS module contains functions that manage and edit RSS feeds and the
+    the articles in the feeds.
+
+    The PSRSS module adds the following functions to your session when you import
+    the module.
+
+        New-Feed              Subscribes to an RSS feed and downloads the articles.
+        Remove-Feed           Unsubscribes to an RSS feed and deletes the articles.
+        Get-Feed              Gets the RSS feeds on your system.
+
+        Get-Article           Gets articles in the RSS feeds on your system.
+        Read-Article          Marks articles as read.
+        Remove-Article        Deletes articles from your system.
+
+
+    For information about these functions, use the Get-Help cmdlet. For example,
+    to get detailed help for the Get-Feed function, type "get-help get-feed -detailed."
+
+    The functions in the PSRSS module uses COM based on the the Microsoft.FeedsManager
+    class in the Windows RSS platform. These functions are implemented as scripts, but
+    are available in the session as functions.     
+
+
+SEE ALSO
+    about_Modules
+    Get-Module
+    Import-Module
+    Remove-Module
+
+    "Windows RSS Platform": http://msdn.microsoft.com/en-us/library/ms684701(VS.85).aspx
+    "Microsoft.FeedsManager Object: http://msdn.microsoft.com/en-us/library/ms684749(VS.85).aspx

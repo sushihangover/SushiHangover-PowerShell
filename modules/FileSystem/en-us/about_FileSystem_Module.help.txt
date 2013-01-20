@@ -1,0 +1,41 @@
+TOPIC
+    about_FileSystem_Module
+
+SHORT DESCRIPTION
+    Describes the FileSystem module in the Windows 7 Resource Kit.
+
+LONG DESCRIPTION
+    The FileSystem module contains functions that work on the file system
+    drives in Windows PowerShell. 
+
+    The following functions are added to your session when you import
+    the FileSystem module
+
+        Copy-ToZip             Compresses files and adds them to a ZIP file. 
+        Get-DuplicateFile      Finds files that have identical file contents.  
+        Get-FreeDiskSpace      Gets the free disk space on logical drives
+                               of the local computer or a remote computer.
+
+        Get-SHA1               Computes the SHA1 hash of the specified file.
+        Mount-SpecialFolder    Creates PSDrives for special folders in the system.
+        New-Zip                Creates a new zip archive.
+        Rename-Drive           Renames a file system drive.
+
+    For information about these functions, use the Get-Help cmdlet. For example,
+    to get detailed help for the Copy-ToZip function, type "get-help copy-tozip -detailed."
+
+
+    NOTE: The Mount-SpecialFolder is run automatically in your session when 
+          you import the FileSystem module. As a result, the session includes
+          a Windows PowerShell drive (PSDrive) for each special folder in the
+          system.
+
+    These functions are implemented as scripts, but are available in the 
+    session as functions.
+
+
+SEE ALSO
+    about_Modules
+    Get-Module
+    Import-Module
+    Remove-Module
