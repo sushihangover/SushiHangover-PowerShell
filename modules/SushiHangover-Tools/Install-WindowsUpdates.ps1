@@ -34,6 +34,16 @@ function Install-WindowsUpdates {
     .EXAMPLE
         C:\PS>Install-WindowsUpdates -Confirm
 
+        Confirm
+        Are you sure you want to perform this action?
+        Performing operation "Install-WindowsUpdates" on Target "Download 1 Windows Update Package(s)".
+        [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+
+        Confirm
+        Are you sure you want to perform this action?
+        Performing operation "Install-WindowsUpdates" on Target "Install Definition Update for Windows Defender - KB2267602
+        (Definition 1.143.401.0)".
+        [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
     .NOTES
     .LINK
         http://sushihangover.blogspot.com
