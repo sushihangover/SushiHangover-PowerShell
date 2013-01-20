@@ -1,33 +1,46 @@
 ﻿Set-StrictMode –Version latest
 function Install-WindowsUpdates {
     <#
-        .SYNOPSIS
-            Get and optionally install Windows Updates
-        .DESCRIPTION
-            This script will get all available udpates for the computer it is run on. 
-            It will then optionally install those updates, provided they do not require 
-            user input.
+    .SYNOPSIS
+        Get and optionally install Windows Updates
+    .DESCRIPTION
+        This script will get all available udpates for the computer it is run on. 
+        It will then optionally install those updates, provided they do not require 
+        user input.
         
-            This script was based off the original vbs that appeared on the MSDN site.
-            Please see the Related Links section for the URL.
+        This script was based off the original vbs that appeared on the MSDN site.
+        Please see the Related Links section for the URL.
         
-            Without any parameters the script will return the title of each update that
-            is currently available.
-        .PARAMETER Install
-            When present the script will download and install each update. If the EulaAccept
-            param has not been passed, only updates that don't have a Eula will be applied.
-        .PARAMETER EulaAccept
-            When present will allow the script to download and install all updates that are
-            currently available.
-        .EXAMPLE
-            Install-WindowsUpdates
-        .NOTES
-        .LINK
-            http://sushihangover.blogspot.com
-        .LINK
-            https://github.com/sushihangover
-        .LINK
-            http://msdn.microsoft.com/en-us/library/windows/desktop/aa387102(v=vs.85).aspx
+        Without any parameters the script will return the title of each update that
+        is currently available.
+    .PARAMETER Install
+        When present the script will download and install each update. If the EulaAccept
+        param has not been passed, only updates that don't have a Eula will be applied.
+    .PARAMETER EulaAccept
+        When present will allow the script to download and install all updates that are
+        currently available.
+    .EXAMPLE
+        C:\PS>Install-WindowsUpdates -ListOnly
+
+        UninstallationNotes :
+        Title               : Definition Update for Windows Defender - KB2267602 (Definition 1.143.401.0)
+        Description         : Install this update to revise the definition files that are used to detect viruses, spyware, and
+                                other potentially unwanted software. Once you have installed this item, it cannot be removed.
+        SupportUrl          : http://go.microsoft.com/fwlink/?LinkId=52661
+        RebootRequired      : False
+    .EXAMPLE
+        C:\PS>Install-WindowsUpdates -WhatIf
+        What if: Performing operation "Install-WindowsUpdates" on Target "Download 1 Windows Update Package(s)".
+    .EXAMPLE
+        C:\PS>Install-WindowsUpdates -Confirm
+
+    .NOTES
+    .LINK
+        http://sushihangover.blogspot.com
+    .LINK
+        https://github.com/sushihangover
+    .LINK
+        http://msdn.microsoft.com/en-us/library/windows/desktop/aa387102(v=vs.85).aspx
     #>
     [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="High")]
     Param (
@@ -62,7 +75,7 @@ function Install-WindowsUpdates {
             ForEach ($Update in $SearchResult.Updates) {
                 New-Object -TypeName PSObject -Property @{
                     Title = $Update.Title; Description = $Update.Description; SupportUrl = $Update.SupportUrl; 
-                    UninstallationNotes = $Update.UninstallationNotes; RebootRequired = $Update.RebootRequired}
+                        UninstallationNotes = $Update.UninstallationNotes; RebootRequired = $Update.RebootRequired}
             }
         } elseif ($SearchResult.Updates.Count -ne 0) {
             if (Test-IsElevatedUser) {
@@ -70,7 +83,6 @@ function Install-WindowsUpdates {
                 $UpdatesToDownload = New-Object -ComObject 'Microsoft.Update.UpdateColl'
                 ForEach ($Update in $SearchResult.Updates) {
                     $addThisUpdate = $false
-                    $Update.EulaAccepted
                     if ($Update.InstallationBehavior.CanRequestUserInput) {
                         Write-Verbose "> Skipping: $($Update.Title) because it requires user input"
                     } elseif ($Update.EulaAccepted -eq $false) {
@@ -118,9 +130,9 @@ function Install-WindowsUpdates {
                             Write-Verbose "Installation Result: $($InstallationResult.ResultCode)"
                             Write-Verbose "Reboot Required: $($InstallationResult.RebootRequired)"
                             Write-Verbose 'Listing of updates installed and individual installation results'            
-                            for($i=0; $i -lt $UpdatesToInstall.Count; $i++)                             {
+                            for($i=0; $i -lt $UpdatesToInstall.Count; $i++) {
                                 New-Object -TypeName PSObject -Property @{
-                                    Title = $UpdateTitle; Result = $InstallationResult.GetUpdateResult.ResultCode}
+                                    Title = $UpdateTitle; Result = $InstallationResult.ResultCode}
                             }
                         }
                         $UpdatesToInstall.Clear()
