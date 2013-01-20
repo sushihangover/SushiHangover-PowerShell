@@ -1,4 +1,5 @@
-﻿function Remove-ComObjectsFromMemory {
+﻿Set-StrictMode –Version latest
+function Remove-ComObjectsFromMemory {
     <#
     .NOTES
         Copyright 2012 Robert Nees
@@ -24,8 +25,7 @@
         [Management.Automation.ScopedItemOptions]$scopedOpt = 'ReadOnly, Constant' 
         Get-Variable -Scope 1 | Where-Object { 
             $_.Value.pstypenames -contains 'System.__ComObject' -and -not ($scopedOpt -band $_.Options) 
-            } | Remove-Variable -Scope 1 -Verbose:([Bool]$PSBoundParameters['Verbose'].IsPresent) 
+            } | Remove-Variable -Scope 1 -Verbose
     [GC]::Collect() 
     }
 }
-Export-ModuleMember -function Remove-ComObjectsFromMemory

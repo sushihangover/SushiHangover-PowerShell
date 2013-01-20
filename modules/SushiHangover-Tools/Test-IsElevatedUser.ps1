@@ -5,7 +5,7 @@
         Licensed under the Apache License, Version 2.0 (the "License");
         http://sushihangover.blogspot.com
     .SYNOPSIS
-        Elevated Privileges?
+        Elevated Privileges
     .DESCRIPTION
         Checks if the current Powershell instance is running with elevated privileges or not.
     .OUTPUTS

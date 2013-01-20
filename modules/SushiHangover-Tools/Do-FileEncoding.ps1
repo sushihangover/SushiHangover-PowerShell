@@ -52,7 +52,6 @@ function Get-FileEncoding
     End {
     }
 }
-Export-ModuleMember -function Get-FileEncoding
 
 Function Set-FileEncoding {
     <#
@@ -90,4 +89,3 @@ Function Set-FileEncoding {
         }
     }
 }
-Export-ModuleMember -function Set-FileEncoding

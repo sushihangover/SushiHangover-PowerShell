@@ -105,7 +105,6 @@ function Initialize-File{
     end {
     }
 }
-Export-ModuleMember -function Initialize-File
 
 # Initialize-File naming sucks for the 'touch' command but makes sense in the 
 # verb list and passes loading without errors, but lets alias to 'touch-file', ok!

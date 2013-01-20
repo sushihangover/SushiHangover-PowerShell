@@ -31,7 +31,9 @@ function Install-WindowsUpdates {
     #>
     [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="High")]
     Param (
-        [parameter(mandatory=$false)][switch]$RebootIfRequired
+        [parameter(mandatory=$false)][switch]$RebootIfRequired,
+        [parameter(mandatory=$false)][switch]$IncludeHidden,
+        [parameter(mandatory=$false)][switch]$ListOnly
     )
     Begin {
         $ScriptName = $MyInvocation.MyCommand.Name
@@ -44,12 +46,25 @@ function Install-WindowsUpdates {
         }
         $UpdateSession = New-Object -ComObject 'Microsoft.Update.Session'
         $UpdateSession.ClientApplicationID = 'Install Windows Updates via PowerShell'
+        $ReBootRequired = $false
     }
     Process {
         $UpdateSearcher = $UpdateSession.CreateUpdateSearcher()
-        $SearchResult = $UpdateSearcher.Search("IsInstalled=0 and Type='Software' and IsHidden=0")
-        if ($SearchResult.Updates.Count -ne 0) {
-            # $SearchResult.Updates |Select-Object -Property Title, Description, SupportUrl, UninstallationNotes, RebootRequired |Format-List
+        $SearchQuery = "IsInstalled=0 and Type='Software'"
+         if ($IncludeHidden.IsPresent) {
+            $SearchQuery += ' and IsHidden=0'
+        }
+        try {
+            $SearchResult = $UpdateSearcher.Search($SearchQuery)
+        } catch { # [Exception from HRESULT: 0x8024402C] {
+        }
+        if ($ListOnly.IsPresent) {
+            ForEach ($Update in $SearchResult.Updates) {
+                New-Object -TypeName PSObject -Property @{
+                    Title = $Update.Title; Description = $Update.Description; SupportUrl = $Update.SupportUrl; 
+                    UninstallationNotes = $Update.UninstallationNotes; RebootRequired = $Update.RebootRequired}
+            }
+        } elseif ($SearchResult.Updates.Count -ne 0) {
             if (Test-IsElevatedUser) {
                 Write-Verbose 'Creating a collection of updates to download:'
                 $UpdatesToDownload = New-Object -ComObject 'Microsoft.Update.UpdateColl'
@@ -114,6 +129,8 @@ function Install-WindowsUpdates {
             } else {
                 throw "Elevated user required for installation"
             }
+        } else {
+            Write-Verbose "No updates are available" 
         }
     }
     End {

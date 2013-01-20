@@ -38,5 +38,4 @@ Function Clear-Trash {
         }
     }
 }
-Export-ModuleMember -function Clear-Trash
 

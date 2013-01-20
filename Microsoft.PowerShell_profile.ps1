@@ -60,17 +60,6 @@ function halt { shutdown /s /t 5 }
 function rmd ([string] $glob) { remove-item -recurse -force $glob }
 function whoami { (get-content env:\userdomain) + "\" + (get-content env:\username); }
 function strip-extension ([string] $filename) { [system.io.path]::getfilenamewithoutextension($filename) } 
-Function psedit {
-    param(
-        [Parameter(Mandatory=$true,ValueFromPipeline=$true)]$filenames
-    )
-    foreach ($filename in $filenames) {
-        dir $filename | where {!$_.PSIsContainer} | %{
-            # $psISE.CurrentPowerShellTab.Files.Add($_.FullName) > $null
-            ise $_.FullName
-        }
-    }     
-}
 ########################################################
 
 ########################################################
