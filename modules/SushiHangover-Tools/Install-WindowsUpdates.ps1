@@ -13,6 +13,15 @@ function Install-WindowsUpdates {
         
         Without any parameters the script will return the title of each update that
         is currently available.
+
+        The installation result codes from the Windows Update Agent (WUA COM Object) are:
+
+        Exit Codes:
+            0 = scripting failure
+            1 = error obtaining or installing updates
+            2 = installation successful, no further updates to install
+            3 = reboot needed; rerun script after reboot
+
     .PARAMETER Install
         When present the script will download and install each update. If the EulaAccept
         param has not been passed, only updates that don't have a Eula will be applied.
