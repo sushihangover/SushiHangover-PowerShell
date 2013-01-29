@@ -63,7 +63,9 @@ function Process-VolumeDefrag {
     Param (
         [parameter(ParameterSetName='VolumeObject',Mandatory=$true,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)][System.Management.ManagementBaseObject]$Win32_Volume = $null,
         [parameter(ParameterSetName='DriveLetter',Mandatory=$true,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)][string]$DriveLetter,
-        [parameter(ParameterSetName='DriveLetter',Mandatory=$false,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)][string]$ComputerName = 'LocalHost'
+        [parameter(ParameterSetName='DriveLetter',Mandatory=$false,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)][string]$ComputerName = 'LocalHost',
+        [parameter(Mandatory=$false)][switch]$AnalysisOnly,
+        [parameter(Mandatory=$false)][switch]$Force
     )
     Begin {
         if (!(Test-IsElevatedUser)) {
