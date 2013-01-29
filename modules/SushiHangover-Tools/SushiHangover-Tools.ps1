@@ -26,4 +26,8 @@
 . $psScriptRoot\Install-WindowsUpdates.ps1
 . $psScriptRoot\Clear-Trash.ps1
 . $psScriptRoot\Process-VolumeDefrag.ps1
+. $psScriptRoot\Disable-WindowsSearch.ps1
+
+
+
 
