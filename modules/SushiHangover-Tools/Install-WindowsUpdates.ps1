@@ -88,7 +88,19 @@ function Install-WindowsUpdates {
         }
         try {
             $SearchResult = $UpdateSearcher.Search($SearchQuery)
-        } catch { # [Exception from HRESULT: 0x8024402C] {
+        } catch [System.Management.Automation.MethodInvocationException]  { # [Exception from HRESULT: 0x8024402C] {
+        <#
+        #>
+            Write-Error $_.Exception.ToString()
+            Write-Host "You can try the following to correct a HRESULT: 0x8024402C error and then retry this function"
+            Write-Host "   netsh winhttp reset proxy"
+            Write-Host "   net stop wuauserv"
+            Write-Host "   net start wuauserv"
+            Write-Host "   Microsoft KB900936 : http://support.microsoft.com/kb/900936"
+            return
+        } catch {
+            Write-Error $_.Exception.ToString()
+            return
         }
         if ($ListOnly.IsPresent) {
             ForEach ($Update in $SearchResult.Updates) {
