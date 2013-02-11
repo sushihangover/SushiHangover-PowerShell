@@ -43,8 +43,11 @@
     Remove-Module SushiHangover-RSACrypto
 .LINK
     http://sushihangover.blogspot.com
+.LINK
     http://ruudvanderlinden.com/2010/10/19/running-inline-c-with-custom-assemblies-in-powershell-2-0/
+.LINK
     http://blogs.technet.com/b/stefan_gossner/archive/2010/05/07/using-csharp-c-code-in-powershell-scripts.aspx
+.LINK
     http://msdn.microsoft.com/en-us/library/system.security.cryptography.rsacryptoserviceprovider.aspx
 #>
 $CSFile = Join-Path -Path $PSScriptRoot -ChildPath 'opensslkey.cs’
