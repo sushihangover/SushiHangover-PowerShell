@@ -27,7 +27,5 @@
 . $psScriptRoot\Clear-Trash.ps1
 . $psScriptRoot\Process-VolumeDefrag.ps1
 . $psScriptRoot\Disable-WindowsSearch.ps1
-
-
-
-
+. $psScriptRoot\Sleep-Computer.ps1
+. $psScriptRoot\Clear-IECache.ps1
