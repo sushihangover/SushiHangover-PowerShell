@@ -34,7 +34,7 @@ Import-Module SushiHangover-RSACrypto
 
 ########################################################
 # Aliases
-Set-Alias grep Do-Grep
+Set-Alias grep Process-Grep
 set-alias wide format-wide
 set-alias which get-command | format-list Path
 set-alias vi vim.exe
