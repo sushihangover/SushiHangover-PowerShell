@@ -29,3 +29,5 @@
 . $psScriptRoot\Disable-WindowsSearch.ps1
 . $psScriptRoot\Sleep-Computer.ps1
 . $psScriptRoot\Clear-IECache.ps1
+. $psScriptRoot\Process-Grep.ps1
+. $psScriptRoot\GZip.ps1
