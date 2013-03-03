@@ -124,7 +124,7 @@ Function Test-ICMP {
 
         For details on Status codes, consult the Links 
     .EXAMPLE
-        C:\PS>Test-ICMP -ComputerName macbookpro -Count 5 -Delay 2 | Out-GridView
+        C:\PS>Test-ICMP -ComputerName macbookpro -Count 5 -Delay 2 -PassThru | Out-GridView
 
         Display the results of the pings in real-time in the GridView component
     .EXAMPLE
@@ -197,9 +197,6 @@ Function Test-ICMP {
                             } else { 
                                 Write-Warning ($ComputerName + " : down")
                             } 
-#                           $foobar =  if ($PingReply.Status -eq [System.Net.NetworkInformation.IPStatus]::Success) { "up" } else { "down" } 
-#                           $foobar = $ComputerName + " : "  + $foobar
-#                           Write-Host $foobar
                         }
                         if (($Count -gt 1) -and ($i -lt ($Count + 1))) {
                              Start-Sleep -Seconds $Delay
