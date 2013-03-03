@@ -106,7 +106,7 @@ Function Resolve-Host {
         }
     }
 }
-Function Test-Ping {
+Function Test-ICMP {
     <#
     .NOTES
         Copyright 2013 Robert Nees
@@ -117,30 +117,38 @@ Function Test-Ping {
         the actual full reply object. Accepts the host name to ping on the pipeline and returns the ping reply object for 
         pipeline processing.
     .DESCRIPTION
-        This class provides functionality similar to the Ping.exe command line tool. 
-        The Send and SendAsync methods send an Internet Control Message Protocol (ICMP) echo request message to a remote computer 
+        This cmdlet provides functionality similar to the Ping.exe command line tool. 
+        The Send methods send an Internet Control Message Protocol (ICMP) echo request message to a remote computer 
         and waits for an ICMP echo reply message from that computer. 
         For a detailed description of ICMP messages, see RFC 792, available at http://www.ietf.org.
 
         For details on Status codes, consult the Links 
     .EXAMPLE
-        C:\PS>Test-Ping -ComputerName macbookpro -Count 5 -Delay 2 | Out-GridView
+        C:\PS>Test-ICMP -ComputerName macbookpro -Count 5 -Delay 2 | Out-GridView
 
         Display the results of the pings in real-time in the GridView component
     .EXAMPLE
-        C:\PS>Test-Ping -ComputerName google.com -Count 3 -Delay 1 -Verbose -NoPipelineOut
+        C:PS>@('google.com','www.bing.com') | Test-ICMP -Count 3 -Delay 1 -WhatIf
 
-        VERBOSE: 173.194.33.32 : Success : 9
-        VERBOSE: 173.194.33.32 : Success : 9
-        VERBOSE: 173.194.33.32 : Success : 11
+        What if: Performing operation "Test-ICMP" on Target "google.com".
+        What if: Performing operation "Test-ICMP" on Target "www.bing.com".
     .EXAMPLE
-        C:\PS>Test-Ping -ComputerName bing.com -Count 1
+        C:\PS>Test-ICMP -ComputerName bing.com -Count 1 -PassThru
 
         Status        : Success
         Address       : 204.79.197.200
         RoundtripTime : 7
         Options       : System.Net.NetworkInformation.PingOptions
         Buffer        : {97, 98, 99, 100...}
+    .EXAMPLE
+        C:PS>Test-ICMP -ComputerName bing.com -Simple -Count 2
+
+        True
+        True
+    .EXAMPLE 
+        C:PS>Test-ICMP -ComputerName b11.com
+        
+        WARNING: b11.com : down
     .LINK
         http://sushihangover.blogspot.com
     .LINK
@@ -150,43 +158,58 @@ Function Test-Ping {
     .LINK
         http://msdn.microsoft.com/en-us/library/system.net.networkinformation.ipstatus.aspx
     #>
-    [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="Low")]
+    [cmdletbinding(DefaultParameterSetName='Simple',SupportsShouldProcess=$True,ConfirmImpact="Low")]
     Param(
-        [Parameter(Mandatory=$true,Position=0,ValueFromPipeLine=$true,ValueFromPipelineByPropertyName=$true)][string]$ComputerName,
-        [Parameter(Mandatory=$false,Position=1,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$Count = 1,
+        [Parameter(Mandatory=$true,Position=1,ValueFromPipeLine=$true,ValueFromPipelineByPropertyName=$true)][string]$ComputerName,
+        [Parameter(Mandatory=$false,Position=2,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$Count = 1,
         [Parameter(Mandatory=$false,Position=3,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$Delay = 0,
-        [Parameter(Mandatory=$false,Position=4,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$Simple,
-        [Parameter(Mandatory=$false,Position=4,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$NoPipelineOut
+        [Parameter(ParameterSetName='Simple',Mandatory=$false,Position=4,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$Simple,
+        [Parameter(ParameterSetName='PassThru')][Parameter(Mandatory=$false,Position=4,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$PassThru
     )
     Begin {
         $ping = New-Object System.Net.NetworkInformation.Ping
-        Write-Verbose -Message "Host           `tStatus   `tTTL" 
     }
     Process {
-        For ($i=1;$i++,$i -le $Count) {
+        if ($pscmdlet.ShouldProcess("$ComputerName")) {
             try {
-                [System.Net.NetworkInformation.PingReply]$PingReply = $ping.Send($ComputerName)
-            } catch [System.Net.NetworkInformation.PingException] {
-                Write-Warning "Bad Host Name"
-                Break
-            } finally {
-            }
-            if ($Simple) {
-                if ($PingReply.Status -eq [System.Net.NetworkInformation.IPStatus]::Success) {
-                    [boolean]$return = $true
-                } else {
-                    [boolean]$return = $false
+                Resolve-Host -ComputerName $ComputerName -PassThru | Out-Null
+                try {
+                    For ($i=1;$i++,$i -le $Count) {
+                        try {
+                            [System.Net.NetworkInformation.PingReply]$PingReply = $ping.Send($ComputerName)
+                        } catch [System.Net.NetworkInformation.PingException] {
+                            $PingReply = New-Object System.Net.NetworkInformation.PingReply
+                        }
+                        if ($Simple.IsPresent) {
+                            if ($PingReply.Status -eq [System.Net.NetworkInformation.IPStatus]::Success) {
+                                [boolean]$return = $true
+                            } else {
+                                [boolean]$return = $false
+                            }
+                        } else {
+                            [System.Net.NetworkInformation.PingReply]$return = $PingReply
+                        }
+                        if ($Simple.IsPresent -or $PassThru.IsPresent) {
+                            Write-Output $return
+                        } else {
+                            if ($PingReply.Status -eq [System.Net.NetworkInformation.IPStatus]::Success) { 
+                                Write-Host $ComputerName " : up" 
+                            } else { 
+                                Write-Warning ($ComputerName + " : down")
+                            } 
+#                           $foobar =  if ($PingReply.Status -eq [System.Net.NetworkInformation.IPStatus]::Success) { "up" } else { "down" } 
+#                           $foobar = $ComputerName + " : "  + $foobar
+#                           Write-Host $foobar
+                        }
+                        if (($Count -gt 1) -and ($i -lt ($Count + 1))) {
+                             Start-Sleep -Seconds $Delay
+                        }
+                    }
+                } catch {
+                    $Error[0]
                 }
-            } else {
-                $PingResultsString = $PingReply.Address.ToString() + ' : '+ $PingReply.Status.ToString() + ' : ' + $PingReply.RoundtripTime.ToString()
-                Write-Verbose -Message $PingResultsString
-                [System.Net.NetworkInformation.PingReply]$return = $PingReply
-            }
-            if (!($NoPipelineOut.IsPresent)) {
-                Write-Output $return # pipeline results
-            }
-            if (($Count -gt 1) -and ($i -lt ($Count + 1))) {
-                 Start-Sleep -Seconds $Delay
+            } catch {
+                Write-Warning "Non-existant host name : $ComputerName"
             }
         }
     }
