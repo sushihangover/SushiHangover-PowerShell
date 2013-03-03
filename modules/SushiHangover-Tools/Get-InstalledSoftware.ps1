@@ -34,6 +34,7 @@ Function Get-InstalledSoftware {
             Caption           : Microsoft Visual C++ 2008 Redistributable - x64 9.0.30729.6161
     .LINK
         http://sushihangover.blogspot.com
+    .LINK
         https://github.com/sushihangover
     #>
     [cmdletbinding(SupportsShouldProcess=$True)]
