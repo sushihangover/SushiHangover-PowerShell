@@ -72,11 +72,11 @@ Function Resolve-Host {
     .LINK
         https://github.com/sushihangover
     #>
-    [cmdletbinding(DefaultParameterSetName='Limit',SupportsShouldProcess=$True,ConfirmImpact="Low")]
+    [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="Low")]
     Param(
-        [Parameter(Mandatory=$true,ValueFromPipeLine=$true,Position=0,ValueFromPipelineByPropertyName=$true)][string]$ComputerName,
-        [Parameter(ParameterSetName='Limit')][Alias("Count")][Parameter(Mandatory=$false,Position=1,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$First = 0,
-        [Parameter(ParameterSetName='PassThru')][Parameter(Mandatory=$false,Position=1,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$PassThru
+        [Parameter(Position=0,Mandatory=$true,ValueFromPipeLine=$true,ValueFromPipelineByPropertyName=$true)][Alias("System","Computer","Server")][string]$ComputerName,
+        [Alias("Count")][Parameter(Position=1,Mandatory=$false,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$First = 0,
+        [Parameter(Mandatory=$false,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$PassThru
     )
     Process {
         if ($pscmdlet.ShouldProcess("Name lookup on $ComputerName")) {
@@ -90,12 +90,12 @@ Function Resolve-Host {
                     $return = $Addresses.AddressList.IPAddressToString
                 } else {
                     $i = 0
-                    $return + @()
+                    $return = @()
                     foreach ($Address in $Addresses.AddressList) {
                         # can not use break as this is pipeline'd, so use the old fashion if/else
                         if ($i -lt $Addresses.AddressList.Count) {
                             if ($i -lt $First) {
-                                $return =+ $Address.IPAddressToString
+                                $return += $Address.IPAddressToString
                             $i++
                             }
                         }
