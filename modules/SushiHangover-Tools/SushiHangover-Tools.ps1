@@ -32,3 +32,5 @@
 . $psScriptRoot\Process-Grep.ps1
 . $psScriptRoot\GZip.ps1
 . $psScriptRoot\Net-Tools.ps1
+. $psScriptRoot\Get-GeoIP.ps1
+. $psScriptRoot\Test-ModuleLoaded.ps1
