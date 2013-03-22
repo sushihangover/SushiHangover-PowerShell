@@ -74,9 +74,9 @@ Function Resolve-Host {
     #>
     [cmdletbinding(DefaultParameterSetName='Limit',SupportsShouldProcess=$True,ConfirmImpact="Low")]
     Param(
-        [Parameter(Mandatory=$true,ValueFromPipeLine=$true,Position=1,ValueFromPipelineByPropertyName=$true)][string]$ComputerName,
-        [Parameter(ParameterSetName='Limit')][Alias("Count")][Parameter(Mandatory=$false,Position=2,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$First = 0,
-        [Parameter(ParameterSetName='PassThru')][Parameter(Mandatory=$false,Position=2,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$PassThru
+        [Parameter(Mandatory=$true,ValueFromPipeLine=$true,Position=0,ValueFromPipelineByPropertyName=$true)][string]$ComputerName,
+        [Parameter(ParameterSetName='Limit')][Alias("Count")][Parameter(Mandatory=$false,Position=1,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][int]$First = 0,
+        [Parameter(ParameterSetName='PassThru')][Parameter(Mandatory=$false,Position=1,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$PassThru
     )
     Process {
         if ($pscmdlet.ShouldProcess("Name lookup on $ComputerName")) {
@@ -214,7 +214,7 @@ Function Test-ICMP {
         $ping = $null
     }
 }
-Function Test-RemoteWMI{
+Function Test-WMIPing{
     <#
     .NOTES
         Copyright 2013 Robert Nees
@@ -225,104 +225,109 @@ Function Test-RemoteWMI{
     .DESCRIPTION
         By using the remote WMI Object from the computer that we are trying to 'ping', we can 
         determine if the machine is actually responding to WMI requests vs. just ICMP replies.
+
+        Using the PassThru switch parameter you call retrieve the Win32_PingStatus object:
+
+            TypeName: System.Management.ManagementObject#root\cimv2\Win32_PingStatus
+
+        While this cmdlet was written to test that the WMI was respondin from a remote server, you can change 
+        the RemoteHost parameter to a remote computer and ping from the remote machine to another remote machine like
+        the Test-Connection cmdlet does
     .EXAMPLE
+        C:PS>Test-WMIPing -ComputerName macbookpro -WhatIf
+        What if: Performing operation "Test-WMIPing" on Target "macbookpro".
+    .EXAMPLE
+        C:PS>Test-WMIPing -ComputerName macbookpro -Simple
+        True
+    .EXAMPLE
+        C:PS>Test-WMIPing -ComputerName macbookpro -PassThru
+
+        Source        Destination     IPV4Address      IPV6Address                              Bytes    Time(ms)
+        ------        -----------     -----------      -----------                              -----    --------
+        MACBOOKPRO    127.0.0.1       192.168.1.8      fe80::3c55:2d55:3f57:fef7%16             32       0
+
     .LINK
         http://sushihangover.blogspot.com
     .LINK
         https://github.com/sushihangover
     #>
-    [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="Low")]
+    [cmdletbinding(DefaultParameterSetName='Simple',SupportsShouldProcess=$True,ConfirmImpact="Low")]
     Param(
         [Parameter(Mandatory=$true,Position=0,ValueFromPipeLine=$true,ValueFromPipelineByPropertyName=$true)]$ComputerName,
-        [Parameter(Mandatory=$false,Position=0,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)]$Credentials
+        [Parameter(Mandatory=$false,Position=0,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)]$Credential = $null,
+        [Parameter(Mandatory=$false,Position=0,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)]$RemoteHost = '127.0.0.1',
+        [Parameter(ParameterSetName='Simple',Mandatory=$false,Position=4,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$Simple,
+        [Parameter(ParameterSetName='PassThru')][Parameter(Mandatory=$false,Position=4,ValueFromPipeLine=$false,ValueFromPipelineByPropertyName=$false)][switch]$PassThru
     )
-    Begin {
-        $ping = New-Object System.Net.NetworkInformation.Ping
-    }
     Process {
-        $ping = Get-WMIObject -Credential  -ComputerName $ComputerName -Property Win32_PingStatus -Filter "Address ='127.0.0.1'"
-        $ping.Status
-
-if ( $objPing -eq $null )
-{
-  $res = "UNCERTAIN: Failed to execute Ping"
-  echo $res
-  exit
-}
-
-#Check if the ping was successfull or not
-if ( $objPing.StatusCode -ne 0 )
-{ 
-  $res = "ERROR: Destination host (" + $strHost + ") unreachble" 
-  echo $res
-  exit
-}
-
-        $local:ErrorActionPreference = 'SilentlyContinue'
-        if ($ping.Send($ComputerName)) {
-            return $True
-        } else {
-            return $False
+        if ($pscmdlet.ShouldProcess("$ComputerName")) {
+            $FilterString = 'Address="' + $RemoteHost +'"'
+            if ($Credential -eq $null) {
+                $PingReply = Get-WMIObject -ComputerName $ComputerName -Class Win32_PingStatus -Filter $FilterString
+            } else {
+                $PingReply = Get-WMIObject -Credential $Credential -ComputerName $ComputerName -Class Win32_PingStatus -Filter $FilterString
+            }
+            if ($Simple.IsPresent) {
+                if ($PingReply.StatusCode -eq 0) {
+                    Write-Output $true
+                } else { 
+                    Write-Output $false
+                }
+            } elseif ($PassThru.IsPresent) {
+                Write-Output $PingReply
+            } else {
+                if ($PingReply.StatusCode -eq 0) {
+                    Write-Host $ComputerName " : up" 
+                } else { 
+                    Write-Warning ($ComputerName + " : down")
+                }
+            }
         }
     }
-    End {
-        $ping = $null
-        rm variable:ping
-    }
 }
 
 <#
-Add-Type -TypeDefinition @public enum WMIPingStatusCode {
->> A,
->> B,
->> C,
->> D
->> }
->> '@
-
-<#
-StatusCode
-0
-Success
-11001
-Buffer Too Small
-11002
-Destination Net Unreachable
-11003
-Destination Host Unreachable
-11004
-Destination Protocol Unreachable
-11005
-Destination Port Unreachable
-11006
-No Resources
-11007
-Bad Option
-11008
-Hardware Error
-11009
-Packet Too Big
-11010
-Request Timed Out
-11011
-Bad Request
-11012
-Bad Route
-11013
-TimeToLive Expired Transit
-11014
-TimeToLive Expired Reassembly
-11015
-Parameter Problem
-11016
-Source Quench
-11017
-Option Too Big
-11018
-Bad Destination
-11032
-Negotiating IPSEC
-11050
-General Failure
-
+    StatusCode
+    0
+    Success
+    11001
+    Buffer Too Small
+    11002
+    Destination Net Unreachable
+    11003
+    Destination Host Unreachable
+    11004
+    Destination Protocol Unreachable
+    11005
+    Destination Port Unreachable
+    11006
+    No Resources
+    11007
+    Bad Option
+    11008
+    Hardware Error
+    11009
+    Packet Too Big
+    11010
+    Request Timed Out
+    11011
+    Bad Request
+    11012
+    Bad Route
+    11013
+    TimeToLive Expired Transit
+    11014
+    TimeToLive Expired Reassembly
+    11015
+    Parameter Problem
+    11016
+    Source Quench
+    11017
+    Option Too Big
+    11018
+    Bad Destination
+    11032
+    Negotiating IPSEC
+    11050
+    General Failure
 #>
