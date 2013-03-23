@@ -26,7 +26,7 @@ Function Expand-GeoIPDatabase {
  Databases. Normally callled by Refresh-GeoIPDatabase, but if you manually download 
         the datbases you can use this to decompass the '.gz' files
     .EXAMPLE
-        c:\ps>Refresh-GeoIPDatabase
+        C:\PS>Expand-GeoIPDatabase
     #>
     [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="Low")]
 
@@ -46,7 +46,7 @@ Function Refresh-GeoIpDatabase {
     .DESCRIPTION
         Download/Refresh your MaxMind GeoIP Free Databases
     .EXAMPLE
-        c:\ps>Refresh-GeoIPDatabase
+        C:\PS>Refresh-GeoIPDatabase
     #>
     [cmdletbinding(SupportsShouldProcess=$True,ConfirmImpact="Low")]
     Param (
@@ -83,6 +83,13 @@ Function Get-GeoIpCity {
     .SYNOPSIS
     .DESCRIPTION
     .EXAMPLE
+        C:\PS>Resolve-Host Microsoft.com | Get-GeoIpCity
+        Redmond
+        C:\PS>Resolve-Host Google.com | Get-GeoIpCity
+        Mountain View
+    .EXAMPLE
+        C:\PS>$MyHomeTownIP | Get-GeoIpCity
+        Kirkland
     .LINK
         http://sushihangover.blogspot.com
     .LINK
