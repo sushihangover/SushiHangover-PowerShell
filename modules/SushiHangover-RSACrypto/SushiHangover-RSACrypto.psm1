@@ -160,7 +160,7 @@ Function Get-RSAClearText {
     $clearBytes = Get-RSAClearBytes $CypherBase64 $OAEPPadding
     Return Convert-ByteToString $clearBytes
 }
-Export-ModuleMember -function Set-RSAEncryptedBytes
+Export-ModuleMember -function Get-RSAClearText
 
 Function Get-RSAEncryptedBytes {
     Param (
